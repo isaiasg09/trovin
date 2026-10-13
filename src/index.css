@@ -1,0 +1,221 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   DESIGN SYSTEM — Trovato Vino (ver DESIGN_BRIEF.md)
+   Cores em triplets RGB para suportar modificadores de opacidade do Tailwind.
+   ========================================================================== */
+:root {
+  /* Bordô "Barolo" — marca */
+  --color-primary-50: 251 243 244;
+  --color-primary-100: 244 225 227;
+  --color-primary-200: 232 192 197;
+  --color-primary-300: 212 147 155;
+  --color-primary-400: 184 96 108;
+  --color-primary-500: 154 58 72;
+  --color-primary-600: 125 35 51;
+  --color-primary-700: 100 23 38;
+  --color-primary-800: 74 15 27;
+  --color-primary-900: 46 9 17;
+  --color-primary-950: 26 5 9;
+
+  /* Marfim "Pergaminho" — seções claras e texto sobre escuro */
+  --color-secondary-50: 253 250 244;
+  --color-secondary-100: 248 241 228;
+  --color-secondary-200: 239 227 203;
+  --color-secondary-300: 226 207 169;
+  --color-secondary-400: 205 181 133;
+
+  /* Cobre "Garrafa" — ÚNICA cor de CTA e ornamentos */
+  --color-accent-200: 243 213 187;
+  --color-accent-300: 232 180 138;
+  --color-accent-400: 217 154 104;
+  --color-accent-500: 200 131 79;
+  --color-accent-600: 168 105 60;
+  --color-accent-700: 133 81 46;
+  --color-accent-800: 94 57 32;
+
+  /* Superfícies escuras (preto-vinho, nunca preto puro) */
+  --color-surface: 21 10 13;
+  --color-surface-raised: 31 16 20;
+  --color-surface-deep: 13 6 8;
+
+  /* Texto */
+  --color-ink: 36 22 26;
+  --color-ink-muted: 94 74 76;
+  --color-cream-muted: 205 189 169;
+
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-surface font-body text-cream antialiased;
+    overflow-x: hidden;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display;
+    font-optical-sizing: auto;
+  }
+
+  ::selection {
+    @apply bg-accent-400 text-surface;
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--color-accent-400));
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  img {
+    @apply select-none;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .section {
+    @apply relative py-20 md:py-28;
+  }
+
+  /* Eyebrow com filete cobre */
+  .eyebrow {
+    @apply inline-flex items-center gap-3 font-body text-eyebrow font-medium uppercase;
+  }
+  .eyebrow::before {
+    content: '';
+    @apply block h-px w-8 bg-current opacity-70;
+  }
+
+  /* Divisor de carta de vinhos: filete + losango + filete */
+  .ornament {
+    @apply flex items-center gap-3 text-accent-500;
+  }
+  .ornament::before,
+  .ornament::after {
+    content: '';
+    @apply block h-px w-12 bg-current opacity-60 md:w-16;
+  }
+  .ornament > span {
+    @apply block h-2 w-2 rotate-45 border border-current;
+  }
+
+  /* ---------- Botões ---------- */
+  .btn-primary {
+    @apply relative isolate inline-flex min-h-[48px] items-center justify-center gap-3 overflow-hidden rounded-sm
+      bg-gradient-to-r from-accent-300 via-accent-400 to-accent-500 px-7 py-4
+      font-body text-sm font-semibold uppercase tracking-label text-surface
+      shadow-copper transition-all duration-300 ease-decant
+      hover:-translate-y-1 hover:shadow-copper-lg hover:brightness-110
+      active:translate-y-0 active:scale-[0.98];
+    background-size: 200% 100%;
+    background-position: 0% 50%;
+  }
+  .btn-primary:hover {
+    background-position: 100% 50%;
+  }
+  .btn-primary::before {
+    /* moldura interna fina, efeito rótulo */
+    content: '';
+    @apply pointer-events-none absolute inset-[3px] rounded-[1px] border border-surface/20;
+  }
+  .btn-primary::after {
+    /* shine diagonal */
+    content: '';
+    @apply pointer-events-none absolute inset-y-0 left-0 -z-0 w-1/3 bg-gradient-to-r from-transparent via-secondary-50/60 to-transparent;
+    transform: translateX(-120%) skewX(-20deg);
+  }
+  .btn-primary:hover::after,
+  .btn-primary:focus-visible::after {
+    @apply animate-shine;
+  }
+
+  .btn-ghost {
+    @apply inline-flex min-h-[48px] items-center justify-center gap-3 rounded-sm border border-current px-7 py-4
+      font-body text-sm font-medium uppercase tracking-label transition-all duration-300 ease-decant
+      hover:-translate-y-1 hover:bg-accent-400/10 active:translate-y-0;
+  }
+
+  /* ---------- Texturas ---------- */
+  .grain {
+    @apply relative isolate;
+  }
+  .grain::before {
+    content: '';
+    @apply pointer-events-none absolute inset-0 -z-10;
+    background-image: var(--grain);
+    opacity: 0.07;
+    mix-blend-mode: overlay;
+  }
+  .paper {
+    @apply relative isolate bg-secondary-100 text-ink;
+  }
+  .paper::before {
+    content: '';
+    @apply pointer-events-none absolute inset-0 -z-10;
+    background-image: var(--grain);
+    opacity: 0.16;
+    mix-blend-mode: multiply;
+    filter: sepia(1);
+  }
+
+  /* Passe-partout (moldura interna deslocada) */
+  .frame {
+    @apply relative;
+  }
+  .frame::after {
+    content: '';
+    @apply pointer-events-none absolute inset-3 rounded-[1px] border border-secondary-50/30 transition-all duration-500 ease-decant;
+  }
+  .frame:hover::after {
+    @apply inset-4 border-accent-300/60;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+}
+
+/* Acessibilidade: sem movimento para quem prefere */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
